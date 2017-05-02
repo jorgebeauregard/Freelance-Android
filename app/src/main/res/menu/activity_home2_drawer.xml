@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Freelance">
+        <menu>
+            <item
+                android:id="@+id/all_projects"
+                android:icon="@drawable/home"
+                android:title="Home" />
+            <item
+                android:id="@+id/my_submitted_projects"
+                android:icon="@drawable/book"
+                android:title="Submitted Projects" />
+            <item
+                android:id="@+id/my_work_projects"
+                android:icon="@drawable/openbook"
+                android:title="Current Projects" />
+            <item
+                android:id="@+id/profile"
+                android:icon="@drawable/account"
+                android:title="Profile" />
+        </menu>
+    </item>
+
+    <item android:title="User Actions">
+        <menu>
+            <item
+                android:id="@+id/logout"
+                android:icon="@drawable/power"
+                android:title="Logout"/>
+        </menu>
+    </item>
+
+</menu>
