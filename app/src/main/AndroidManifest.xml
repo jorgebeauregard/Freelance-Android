@@ -55,6 +55,7 @@
             android:name=".Activity.EditProfileActivity"
             android:label="@string/title_activity_edit_profile"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".RegisterUserActivity"></activity>
     </application>
 
 </manifest>
