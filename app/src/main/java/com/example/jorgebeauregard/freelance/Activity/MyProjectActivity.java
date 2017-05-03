@@ -123,6 +123,7 @@ public class MyProjectActivity extends AppCompatActivity {
                     ((TextView) findViewById(R.id.project_description)).setText(JSONdata.getString("description"));
                     JSONObject JSONdata2 = JSONdata.getJSONObject("owner");;
                     ((TextView) findViewById(R.id.project_owner)).setText(JSONdata2.getString("email"));
+                    Owner = JSONdata2.getString("name");
 
                     JSONArray array_photos = JSONdata.getJSONArray("photos");
 
@@ -324,7 +325,7 @@ public class MyProjectActivity extends AppCompatActivity {
         mRequestQueue = new RequestQueue(cache, network);
         // Start the queue
         mRequestQueue.start();
-        String login = url + "api/deleteProject?project_id=" + String.valueOf(projectId);
+        String login = url + "api/deleteProject?project_id=" + getIntent().getIntExtra("project_id",1);
         final Context c = this;
         // Formulate the request and handle the response.
         //Toast.makeText(getBaseContext(),"prueba", Toast.LENGTH_SHORT).show();
