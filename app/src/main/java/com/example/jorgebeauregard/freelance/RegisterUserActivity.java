@@ -24,6 +24,7 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
 import com.example.jorgebeauregard.freelance.Activity.AllMyProjectsActivity;
+import com.example.jorgebeauregard.freelance.Activity.AllProjectsActivity;
 import com.example.jorgebeauregard.freelance.Activity.LoginActivity;
 import com.example.jorgebeauregard.freelance.R;
 
@@ -98,7 +99,7 @@ public class RegisterUserActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("user_id", id);
                         editor.apply();
-                        Intent intent = new Intent(RegisterUserActivity.this,AllMyProjectsActivity.class);
+                        Intent intent = new Intent(RegisterUserActivity.this,AllProjectsActivity.class);
                         intent.putExtra(EXTRA_MESSAGE, id);
                         startActivity(intent);
                         //Toast.makeText(getBaseContext(), id, Toast.LENGTH_SHORT).show();

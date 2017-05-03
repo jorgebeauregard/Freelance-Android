@@ -26,6 +26,11 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
+import com.example.jorgebeauregard.freelance.Activity.AllMyProjectsActivity;
+import com.example.jorgebeauregard.freelance.Activity.AllProjectsActivity;
+import com.example.jorgebeauregard.freelance.Activity.CreateProjectActivity;
+import com.example.jorgebeauregard.freelance.Activity.LoginActivity;
+import com.example.jorgebeauregard.freelance.Activity.ProfileActivity;
 import com.example.jorgebeauregard.freelance.Adapters.AdapterHome;
 import com.example.jorgebeauregard.freelance.Classes.Project;
 import com.example.jorgebeauregard.freelance.R;
@@ -37,7 +42,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllProjectsActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class CurrentProjects extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private ListView listProjects;
     private List<Project> ListProjects;
     private AdapterHome a1;
@@ -48,11 +53,11 @@ public class AllProjectsActivity extends AppCompatActivity implements Navigation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        setTitle("Home");
+        setTitle("Current Projects");
 
         preferences = getSharedPreferences("user", MODE_PRIVATE);
         if(preferences.getString("user_id","").equals("")){
-            Intent intent = new Intent(AllProjectsActivity.this,LoginActivity.class);
+            Intent intent = new Intent(CurrentProjects.this,LoginActivity.class);
             startActivity(intent);
         }
 
@@ -65,7 +70,7 @@ public class AllProjectsActivity extends AppCompatActivity implements Navigation
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AllProjectsActivity.this,CreateProjectActivity.class);
+                Intent intent = new Intent(CurrentProjects.this,CreateProjectActivity.class);
                 startActivity(intent);
             }
         });
@@ -92,7 +97,7 @@ public class AllProjectsActivity extends AppCompatActivity implements Navigation
         mRequestQueue.start();
 
         final String url = "http://10.50.92.115:8000/";
-        String urlG = url + "api/getNotJoinedProjects?user_id="+preferences.getString("user_id","");
+        String urlG = url + "api/getJoinedProjects?user_id="+preferences.getString("user_id","");
         final Context c = this;
         // Formulate the request and handle the response.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, urlG, new Response.Listener<String>() {
@@ -129,7 +134,7 @@ public class AllProjectsActivity extends AppCompatActivity implements Navigation
                     }
                     listProjects = (ListView)findViewById(R.id.listProjects);
 
-                    a1=new AdapterHome(AllProjectsActivity.this, ListProjects, AllProjectsActivity.this);
+                    a1=new AdapterHome(CurrentProjects.this, ListProjects, CurrentProjects.this);
 
                     listProjects.setAdapter(a1);
 
@@ -187,17 +192,15 @@ public class AllProjectsActivity extends AppCompatActivity implements Navigation
         int id = item.getItemId();
 
         if (id == R.id.all_projects) {
-            Intent intent = new Intent(AllProjectsActivity.this, AllProjectsActivity.class);
+            Intent intent = new Intent(CurrentProjects.this, AllProjectsActivity.class);
             startActivity(intent);
         } else if (id == R.id.my_submitted_projects) {
-            Intent intent = new Intent(AllProjectsActivity.this, AllMyProjectsActivity.class);
+            Intent intent = new Intent(CurrentProjects.this, AllMyProjectsActivity.class);
             startActivity(intent);
         } else if (id == R.id.my_work_projects) {
-            Intent intent = new Intent(AllProjectsActivity.this, CurrentProjects.class);
-            startActivity(intent);
 
         } else if (id == R.id.profile) {
-            Intent intent = new Intent(AllProjectsActivity.this, ProfileActivity.class);
+            Intent intent = new Intent(CurrentProjects.this, ProfileActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.logout) {
@@ -206,7 +209,7 @@ public class AllProjectsActivity extends AppCompatActivity implements Navigation
             editor.remove("user_id");
             editor.commit();
 
-            Intent intent = new Intent(AllProjectsActivity.this,LoginActivity.class);
+            Intent intent = new Intent(CurrentProjects.this,LoginActivity.class);
             startActivity(intent);
         }
 

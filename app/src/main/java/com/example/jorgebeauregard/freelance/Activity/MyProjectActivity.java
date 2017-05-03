@@ -2,6 +2,7 @@ package com.example.jorgebeauregard.freelance.Activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Cache;
 import com.android.volley.Request;
@@ -38,12 +40,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyProjectActivity extends AppCompatActivity {
-
+    boolean flag=false;
+    final String url = "http://10.50.92.115:8000/";
+    private SharedPreferences preferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_project);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        preferences = getSharedPreferences("user",MODE_PRIVATE);
         setSupportActionBar(toolbar);
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         final SliderLayout mDemoSlider;
@@ -64,9 +69,16 @@ public class MyProjectActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MyProjectActivity.this,EditProjectActivity.class);
-                intent.putExtra("project_id",getIntent().getIntExtra("project_id",1));
-                startActivity(intent);
+                if (flag)
+                {
+                    Intent intent = new Intent(MyProjectActivity.this,EditProjectActivity.class);
+                    intent.putExtra("project_id",getIntent().getIntExtra("project_id",1));
+                    startActivity(intent);
+                }
+                else
+                {
+                    joinProject();
+                }
             }
         });
 
@@ -84,7 +96,7 @@ public class MyProjectActivity extends AppCompatActivity {
         // Start the queue
         mRequestQueue.start();
 
-        final String url = "http://10.50.92.115:8000/";
+
         String urlG = url + "api/getProject?project_id="+getIntent().getIntExtra("project_id",1);
         final Context c = this;
         // Formulate the request and handle the response.
@@ -148,6 +160,9 @@ public class MyProjectActivity extends AppCompatActivity {
                     String collaborators = "";
                     for (int i = 0; i < collaborators_list.size(); i++) {
                         if (i != collaborators_list.size()-1){
+                            if (collaborators_list.get(i).equals(getIntent().getStringExtra("name"))){
+                                flag = true;
+                            }
                             collaborators += collaborators_list.get(i) + ", ";
                         }
                         else
@@ -178,7 +193,52 @@ public class MyProjectActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.home, menu);
         return true;
     }
+    public void joinProject()
+    {
+        RequestQueue mRequestQueue;
+        // Instantiate the cache
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        BasicNetwork network = new BasicNetwork(new HurlStack());
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
+        // Start the queue
+        mRequestQueue.start();
+        String join = url + "api/joinProject?project_id=" + getIntent().getIntExtra("project_id",1) + "&user_id=" + preferences.getString("user_id","");
+        //Toast.makeText(getBaseContext(),join, Toast.LENGTH_SHORT).show();
+        System.out.print(join);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, join, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                // Do something with the response
+                //Toast.makeText(getBaseContext(),"pruebaConexion", Toast.LENGTH_SHORT).show();
+                try {
+                    JSONObject jsonData = new JSONObject(response);
+                    JSONObject JSONdata;
+                    //para mostrar errores
+                    String state = jsonData.getString("state");
+                    //Toast.makeText(getBaseContext(),state, Toast.LENGTH_SHORT).show();
+                    if (Integer.parseInt(state) == 200) {
 
+                        Toast.makeText(getBaseContext(), "You have joined the project", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MyProjectActivity.this,AllProjectsActivity.class);
+                        startActivity(intent);
+
+                    }
+                    //fin de muestra errores
+
+                } catch (JSONException e) {
+                    Log.e("JSONException", "Error: " + e.toString());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getBaseContext(), error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        mRequestQueue.add(stringRequest);
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
