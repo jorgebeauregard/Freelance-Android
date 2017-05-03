@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Cache;
 import com.android.volley.Request;
@@ -44,6 +45,7 @@ public class AllProjectsActivity extends AppCompatActivity implements Navigation
     private AdapterHome a1;
     private SharedPreferences preferences;
     private String name;
+    private TextView user_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +55,8 @@ public class AllProjectsActivity extends AppCompatActivity implements Navigation
         setTitle("Home");
 
         preferences = getSharedPreferences("user", MODE_PRIVATE);
-        if(preferences.getString("user_id","").equals("")){
-            Intent intent = new Intent(AllProjectsActivity.this,LoginActivity.class);
+        if (preferences.getString("user_id", "").equals("")) {
+            Intent intent = new Intent(AllProjectsActivity.this, LoginActivity.class);
             startActivity(intent);
         }
 
@@ -67,7 +69,7 @@ public class AllProjectsActivity extends AppCompatActivity implements Navigation
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AllProjectsActivity.this,CreateProjectActivity.class);
+                Intent intent = new Intent(AllProjectsActivity.this, CreateProjectActivity.class);
                 startActivity(intent);
             }
         });
@@ -80,6 +82,9 @@ public class AllProjectsActivity extends AppCompatActivity implements Navigation
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        if (navigationView != null)
+            user_name = (TextView) navigationView.findViewById(R.id.name);
 
         //Request Data from the server
 
@@ -94,7 +99,7 @@ public class AllProjectsActivity extends AppCompatActivity implements Navigation
         mRequestQueue.start();
 
         final String url = "http://10.50.92.115:8000/";
-        String urlG = url + "api/getNotJoinedProjects?user_id="+preferences.getString("user_id","");
+        String urlG = url + "api/getNotJoinedProjects?user_id=" + preferences.getString("user_id", "");
         final Context c = this;
         // Formulate the request and handle the response.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, urlG, new Response.Listener<String>() {
@@ -105,34 +110,34 @@ public class AllProjectsActivity extends AppCompatActivity implements Navigation
 
                     JSONObject JSONData = new JSONObject(response);
                     JSONArray jsonData = JSONData.getJSONArray("data");
-                    name=JSONData.getString("user_name");
+                    name = JSONData.getString("user_name");
 
                     for (int i = 0; i < jsonData.length(); i++) {
-                        JSONArray array_categories = ((JSONObject)jsonData.get(i)).getJSONArray("categories");
+                        JSONArray array_categories = ((JSONObject) jsonData.get(i)).getJSONArray("categories");
                         List<String> categories_list = new ArrayList<>();
-                        JSONArray array_collaborators = ((JSONObject)jsonData.get(i)).getJSONArray("collaborators");
+                        JSONArray array_collaborators = ((JSONObject) jsonData.get(i)).getJSONArray("collaborators");
                         List<String> collaborators_list = new ArrayList<>();
-                        JSONArray array_images = ((JSONObject)jsonData.get(i)).getJSONArray("photos");
+                        JSONArray array_images = ((JSONObject) jsonData.get(i)).getJSONArray("photos");
                         List<String> images_list = new ArrayList<>();
 
                         for (int j = 0; j < array_categories.length(); j++) {
                             categories_list.add(((JSONObject) array_categories.get(j)).getString("name"));
                         }
 
-                        for(int j = 0; j < array_collaborators.length(); j++){
+                        for (int j = 0; j < array_collaborators.length(); j++) {
                             collaborators_list.add(((JSONObject) array_collaborators.get(j)).getString("name"));
                         }
 
-                        for(int j  = 0; j < array_images.length(); j++){
+                        for (int j = 0; j < array_images.length(); j++) {
                             images_list.add(((JSONObject) array_images.get(j)).getString("path"));
                         }
 
-                        Project project = new Project(((JSONObject)jsonData.get(i)).getInt("id"),((JSONObject)jsonData.get(i)).getString("name"), ((JSONObject)jsonData.get(i)).getString("owner"), ((JSONObject)jsonData.get(i)).getString("description"), ((JSONObject)jsonData.get(i)).getInt("difficulty"), ((JSONObject)jsonData.get(i)).getString("document"),images_list,categories_list,collaborators_list);
+                        Project project = new Project(((JSONObject) jsonData.get(i)).getInt("id"), ((JSONObject) jsonData.get(i)).getString("name"), ((JSONObject) jsonData.get(i)).getString("owner"), ((JSONObject) jsonData.get(i)).getString("description"), ((JSONObject) jsonData.get(i)).getInt("difficulty"), ((JSONObject) jsonData.get(i)).getString("document"), images_list, categories_list, collaborators_list);
                         ListProjects.add(project);
                     }
-                    listProjects = (ListView)findViewById(R.id.listProjects);
+                    listProjects = (ListView) findViewById(R.id.listProjects);
 
-                    a1=new AdapterHome(AllProjectsActivity.this, ListProjects, AllProjectsActivity.this);
+                    a1 = new AdapterHome(AllProjectsActivity.this, ListProjects, AllProjectsActivity.this);
 
                     listProjects.setAdapter(a1);
 
@@ -219,7 +224,7 @@ public class AllProjectsActivity extends AppCompatActivity implements Navigation
             editor.remove("user_id");
             editor.commit();
 
-            Intent intent = new Intent(AllProjectsActivity.this,LoginActivity.class);
+            Intent intent = new Intent(AllProjectsActivity.this, LoginActivity.class);
             startActivity(intent);
         }
 

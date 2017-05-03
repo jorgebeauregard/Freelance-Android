@@ -81,7 +81,7 @@ public class MyProjectActivity extends AppCompatActivity {
                 else
                 {
                     joinProject();
-                    Intent intent = new Intent(MyProjectActivity.this,AllMyProjectsActivity.class);
+                    Intent intent = new Intent(MyProjectActivity.this,CurrentProjects.class);
                     startActivity(intent);
                 }
             }

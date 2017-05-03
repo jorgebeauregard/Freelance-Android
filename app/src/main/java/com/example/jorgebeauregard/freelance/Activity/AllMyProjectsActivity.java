@@ -47,6 +47,7 @@ public class AllMyProjectsActivity extends AppCompatActivity {
     private List<Project> ListProjects;
     private AdapterHome a1;
     private SharedPreferences preferences;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +113,7 @@ public class AllMyProjectsActivity extends AppCompatActivity {
 
                     JSONObject JSONData = new JSONObject(response);
                     JSONArray jsonData = JSONData.getJSONArray("data");
+                    name = JSONData.getString("user_name");
 
                     for (int i = 0; i < jsonData.length(); i++) {
                         JSONArray array_categories = ((JSONObject) jsonData.get(i)).getJSONArray("categories");
@@ -141,6 +143,17 @@ public class AllMyProjectsActivity extends AppCompatActivity {
                     a1 = new AdapterHome(AllMyProjectsActivity.this, ListProjects, AllMyProjectsActivity.this);
 
                     listProjects.setAdapter(a1);
+
+                    listProjects.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Intent intent = new Intent(AllMyProjectsActivity.this, MyProjectActivity.class);
+                            intent.putExtra("project_id", ListProjects.get(position).getId());
+                            intent.putExtra("name", name);
+                            startActivity(intent);
+                        }
+                    });
+
 
                 } catch (JSONException e) {
                     Log.e("JSONException", "Error: " + e.toString());
