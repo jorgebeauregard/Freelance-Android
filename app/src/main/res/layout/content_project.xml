@@ -90,13 +90,25 @@
                 android:layout_margin="10dp"
                 android:text="Jorge Beauregard" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Contact"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/project_owner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="email@email.com" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="20dp">
             </LinearLayout>
         </LinearLayout>
-        
-
-
     </ScrollView>
 </LinearLayout>

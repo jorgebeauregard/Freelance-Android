@@ -111,6 +111,7 @@ public class MyProjectActivity extends AppCompatActivity {
                     setTitle(JSONdata.getString("name"));
                     ((TextView) findViewById(R.id.project_difficulty)).setText(JSONdata.getString("difficulty"));
                     ((TextView) findViewById(R.id.project_description)).setText(JSONdata.getString("description"));
+                    ((TextView) findViewById(R.id.project_owner)).setText(JSONdata.getString("owner_email"));
 
                     JSONArray array_photos = JSONdata.getJSONArray("photos");
 

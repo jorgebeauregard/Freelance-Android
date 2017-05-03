@@ -84,7 +84,7 @@ public class CreateProjectActivity extends AppCompatActivity implements AdapterV
                 String description_to_send = description.getText().toString().replace(" ", "%20");
                 String category_to_send = option_category.replace(" ", "%20");
                 final String url = "http://10.50.92.115:8000/";
-                String urlG = url + "api/createProject?name="+name_to_send+"&description="+description_to_send+"&user_id=1&difficulty="+option_difficulty+"&category="+category_to_send;
+                String urlG = url + "api/createProject?name="+name_to_send+"&description="+description_to_send+"&user_id="+getSharedPreferences("user",MODE_PRIVATE).getString("user_id","")+"&difficulty="+option_difficulty+"&category="+category_to_send;
                 Toast.makeText(CreateProjectActivity.this, urlG,
                         Toast.LENGTH_LONG).show();
 
