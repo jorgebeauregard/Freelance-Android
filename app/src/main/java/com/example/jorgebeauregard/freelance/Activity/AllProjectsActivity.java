@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.android.volley.Cache;
@@ -42,6 +43,7 @@ public class AllProjectsActivity extends AppCompatActivity implements Navigation
     private List<Project> ListProjects;
     private AdapterHome a1;
     private SharedPreferences preferences;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +105,7 @@ public class AllProjectsActivity extends AppCompatActivity implements Navigation
 
                     JSONObject JSONData = new JSONObject(response);
                     JSONArray jsonData = JSONData.getJSONArray("data");
+                    name=JSONData.getString("user_name");
 
                     for (int i = 0; i < jsonData.length(); i++) {
                         JSONArray array_categories = ((JSONObject)jsonData.get(i)).getJSONArray("categories");
@@ -132,6 +135,16 @@ public class AllProjectsActivity extends AppCompatActivity implements Navigation
                     a1=new AdapterHome(AllProjectsActivity.this, ListProjects, AllProjectsActivity.this);
 
                     listProjects.setAdapter(a1);
+
+                    listProjects.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Intent intent = new Intent(AllProjectsActivity.this, MyProjectActivity.class);
+                            intent.putExtra("project_id", ListProjects.get(position).getId());
+                            intent.putExtra("name", name);
+                            startActivity(intent);
+                        }
+                    });
 
                 } catch (JSONException e) {
                     Log.e("JSONException", "Error: " + e.toString());

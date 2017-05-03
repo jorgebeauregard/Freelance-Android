@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.android.volley.Cache;
@@ -47,6 +48,7 @@ public class CurrentProjects extends AppCompatActivity {
     private List<Project> ListProjects;
     private AdapterHome a1;
     private SharedPreferences preferences;
+    private String name = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,13 +58,13 @@ public class CurrentProjects extends AppCompatActivity {
         setTitle("Current Projects");
 
         preferences = getSharedPreferences("user", MODE_PRIVATE);
-        if(preferences.getString("user_id","").equals("")){
-            Intent intent = new Intent(CurrentProjects.this,LoginActivity.class);
+        if (preferences.getString("user_id", "").equals("")) {
+            Intent intent = new Intent(CurrentProjects.this, LoginActivity.class);
             startActivity(intent);
         }
 
         ListProjects = new ArrayList<>();
-
+        listProjects = (ListView) findViewById(R.id.listProjects);
 
         //Request Data from the server
 
@@ -77,7 +79,7 @@ public class CurrentProjects extends AppCompatActivity {
         mRequestQueue.start();
 
         final String url = "http://10.50.92.115:8000/";
-        String urlG = url + "api/getJoinedProjects?user_id="+preferences.getString("user_id","");
+        String urlG = url + "api/getJoinedProjects?user_id=" + preferences.getString("user_id", "");
         final Context c = this;
         // Formulate the request and handle the response.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, urlG, new Response.Listener<String>() {
@@ -88,35 +90,45 @@ public class CurrentProjects extends AppCompatActivity {
 
                     JSONObject JSONData = new JSONObject(response);
                     JSONArray jsonData = JSONData.getJSONArray("data");
+                    name = JSONData.getString("user_name");
 
                     for (int i = 0; i < jsonData.length(); i++) {
-                        JSONArray array_categories = ((JSONObject)jsonData.get(i)).getJSONArray("categories");
+                        JSONArray array_categories = ((JSONObject) jsonData.get(i)).getJSONArray("categories");
                         List<String> categories_list = new ArrayList<>();
-                        JSONArray array_collaborators = ((JSONObject)jsonData.get(i)).getJSONArray("collaborators");
+                        JSONArray array_collaborators = ((JSONObject) jsonData.get(i)).getJSONArray("collaborators");
                         List<String> collaborators_list = new ArrayList<>();
-                        JSONArray array_images = ((JSONObject)jsonData.get(i)).getJSONArray("photos");
+                        JSONArray array_images = ((JSONObject) jsonData.get(i)).getJSONArray("photos");
                         List<String> images_list = new ArrayList<>();
 
                         for (int j = 0; j < array_categories.length(); j++) {
                             categories_list.add(((JSONObject) array_categories.get(j)).getString("name"));
                         }
 
-                        for(int j = 0; j < array_collaborators.length(); j++){
+                        for (int j = 0; j < array_collaborators.length(); j++) {
                             collaborators_list.add(((JSONObject) array_collaborators.get(j)).getString("name"));
                         }
 
-                        for(int j  = 0; j < array_images.length(); j++){
+                        for (int j = 0; j < array_images.length(); j++) {
                             images_list.add(((JSONObject) array_images.get(j)).getString("path"));
                         }
 
-                        Project project = new Project(((JSONObject)jsonData.get(i)).getInt("id"),((JSONObject)jsonData.get(i)).getString("name"), ((JSONObject)jsonData.get(i)).getString("owner"), ((JSONObject)jsonData.get(i)).getString("description"), ((JSONObject)jsonData.get(i)).getInt("difficulty"), ((JSONObject)jsonData.get(i)).getString("document"),images_list,categories_list,collaborators_list);
+                        Project project = new Project(((JSONObject) jsonData.get(i)).getInt("id"), ((JSONObject) jsonData.get(i)).getString("name"), ((JSONObject) jsonData.get(i)).getString("owner"), ((JSONObject) jsonData.get(i)).getString("description"), ((JSONObject) jsonData.get(i)).getInt("difficulty"), ((JSONObject) jsonData.get(i)).getString("document"), images_list, categories_list, collaborators_list);
                         ListProjects.add(project);
                     }
-                    listProjects = (ListView)findViewById(R.id.listProjects);
 
-                    a1=new AdapterHome(CurrentProjects.this, ListProjects, CurrentProjects.this);
+                    a1 = new AdapterHome(CurrentProjects.this, ListProjects, CurrentProjects.this);
 
                     listProjects.setAdapter(a1);
+
+                    listProjects.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Intent intent = new Intent(CurrentProjects.this, MyProjectActivity.class);
+                            intent.putExtra("project_id", ListProjects.get(position).getId());
+                            intent.putExtra("name", name);
+                            startActivity(intent);
+                        }
+                    });
 
                 } catch (JSONException e) {
                     Log.e("JSONException", "Error: " + e.toString());
@@ -130,11 +142,10 @@ public class CurrentProjects extends AppCompatActivity {
         });
         // Add the request to the RequestQueue.
         mRequestQueue.add(stringRequest);
-
     }
 
     @Override
     public void onBackPressed() {
-            super.onBackPressed();
+        super.onBackPressed();
     }
 }

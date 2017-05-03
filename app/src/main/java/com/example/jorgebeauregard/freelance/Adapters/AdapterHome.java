@@ -53,15 +53,7 @@ public class AdapterHome extends BaseAdapter {
         TextView description = (TextView)convertView.findViewById(R.id.description);
         ImageView image = (ImageView)convertView.findViewById(R.id.image);
 
-        LinearLayout project = (LinearLayout)convertView.findViewById(R.id.project);
-        project.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent= new Intent(parentActivity, MyProjectActivity.class);
-                intent.putExtra("project_id",listProjects.get(position).getId());
-                parentActivity.startActivity(intent);
-            }
-        });
+
 
         //SetText for Categories
         String categories_string = "";

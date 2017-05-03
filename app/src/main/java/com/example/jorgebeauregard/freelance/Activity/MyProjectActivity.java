@@ -43,6 +43,7 @@ public class MyProjectActivity extends AppCompatActivity {
     boolean flag=false;
     final String url = "http://10.50.92.115:8000/";
     private SharedPreferences preferences;
+    FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,7 +66,9 @@ public class MyProjectActivity extends AppCompatActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,6 +81,8 @@ public class MyProjectActivity extends AppCompatActivity {
                 else
                 {
                     joinProject();
+                    Intent intent = new Intent(MyProjectActivity.this,AllMyProjectsActivity.class);
+                    startActivity(intent);
                 }
             }
         });
@@ -111,7 +116,8 @@ public class MyProjectActivity extends AppCompatActivity {
                     setTitle(JSONdata.getString("name"));
                     ((TextView) findViewById(R.id.project_difficulty)).setText(JSONdata.getString("difficulty"));
                     ((TextView) findViewById(R.id.project_description)).setText(JSONdata.getString("description"));
-                    ((TextView) findViewById(R.id.project_owner)).setText(JSONdata.getString("owner_email"));
+                    JSONObject JSONdata2 = JSONdata.getJSONObject("owner");;
+                    ((TextView) findViewById(R.id.project_owner)).setText(JSONdata2.getString("email"));
 
                     JSONArray array_photos = JSONdata.getJSONArray("photos");
 
@@ -161,14 +167,26 @@ public class MyProjectActivity extends AppCompatActivity {
                     String collaborators = "";
                     for (int i = 0; i < collaborators_list.size(); i++) {
                         if (i != collaborators_list.size()-1){
-                            if (collaborators_list.get(i).equals(getIntent().getStringExtra("name"))){
-                                flag = true;
-                            }
                             collaborators += collaborators_list.get(i) + ", ";
                         }
                         else
                             collaborators += collaborators_list.get(i);
                     }
+
+                    for (int i = 0; i < collaborators_list.size(); i++) {
+                        if (collaborators_list.get(i).equals(getIntent().getStringExtra("name"))){
+                            flag = true;
+                            break;
+                        }
+                        else
+                            flag=false;
+                    }
+
+                    if(!flag){
+                        fab.setImageDrawable(getDrawable(R.drawable.join));
+                    }
+                    else
+                        fab.setImageDrawable(getDrawable(R.drawable.border));
 
                     ((TextView) findViewById(R.id.project_collaborators)).setText(collaborators);
 
