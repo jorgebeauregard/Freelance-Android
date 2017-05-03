@@ -51,6 +51,7 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
 import com.example.jorgebeauregard.freelance.R;
+import com.example.jorgebeauregard.freelance.RegisterUserActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -132,6 +133,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         });
 
+        Button register = (Button) findViewById(R.id.button);
+        register.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goRegister();
+            }
+        });
         //mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
     }
@@ -249,6 +257,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
+    private void goRegister()
+    {
+        Intent intent = new Intent(LoginActivity.this,RegisterUserActivity.class);
+        startActivity(intent);
+    }
     private void attemptLogin() {
         if (mAuthTask != null) {
             return;

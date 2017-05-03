@@ -46,7 +46,8 @@
         <activity
             android:name=".Activity.AllMyProjectsActivity"
             android:label="@string/title_activity_all_my_projects"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".RegisterUserActivity"></activity>
     </application>
 
 </manifest>
