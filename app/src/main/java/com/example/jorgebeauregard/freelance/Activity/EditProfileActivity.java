@@ -1,5 +1,6 @@
 package com.example.jorgebeauregard.freelance.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.Cache;
 import com.android.volley.Request;
@@ -97,8 +99,65 @@ public class EditProfileActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                System.out.println(password.getText());
+                System.out.println(password_confirmation.getText());
+
+                if(password.getText().toString().equals(password_confirmation.getText().toString())){
+                    RequestQueue mRequestQueue;
+                    // Instantiate the cache
+                    Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+                    // Set up the network to use HttpURLConnection as the HTTP client.
+                    BasicNetwork network = new BasicNetwork(new HurlStack());
+                    // Instantiate the RequestQueue with the cache and network.
+                    mRequestQueue = new RequestQueue(cache, network);
+                    // Start the queue
+                    mRequestQueue.start();
+
+                    final String url = "http://10.50.92.115:8000/";
+
+                    //Get the project
+                    String name_to_send = name.getText().toString().replace(" ", "%20");
+
+
+                    String urlG = url + "api/updateUser?user_id="+user_id+"&name="+name_to_send+"&password="+password.getText().toString();
+                    StringRequest stringRequestUpdate = new StringRequest(Request.Method.GET, urlG, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            // Do something with the response
+                            try {
+                                JSONObject jsonData = new JSONObject(response);
+                                JSONObject JSONdata = jsonData.getJSONObject("data");
+
+                                switch(jsonData.getString("state")){
+                                    case "200":
+                                        Toast toastSuccess = Toast.makeText(getApplicationContext(),"Profile edited successfully",Toast.LENGTH_LONG);
+                                        toastSuccess.show();
+                                        Intent intent = new Intent(EditProfileActivity.this, AllProjectsActivity.class);
+                                        startActivity(intent);
+                                        break;
+                                    case "404":
+                                        Toast toastFailure = Toast.makeText(getApplicationContext(),"Profile could not be updated",Toast.LENGTH_LONG);
+                                        toastFailure.show();
+                                        break;
+                                }
+
+                            } catch (JSONException e) {
+                                Log.e("JSONException", "Error: " + e.toString());
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            // Handle error
+                        }
+                    });
+
+                    mRequestQueue.add(stringRequestUpdate);
+                }
+                else{
+                    Toast toastPasswordIncorrect = Toast.makeText(getApplicationContext(),"Passwords did not match",Toast.LENGTH_LONG);
+                    toastPasswordIncorrect.show();
+                }
             }
         });
     }
