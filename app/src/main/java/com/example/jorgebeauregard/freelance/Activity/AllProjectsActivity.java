@@ -48,6 +48,8 @@ public class AllProjectsActivity extends AppCompatActivity implements Navigation
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        setTitle("Home");
+
         preferences = getSharedPreferences("user", MODE_PRIVATE);
         if(preferences.getString("user_id","").equals("")){
             Intent intent = new Intent(AllProjectsActivity.this,LoginActivity.class);
@@ -193,9 +195,17 @@ public class AllProjectsActivity extends AppCompatActivity implements Navigation
         } else if (id == R.id.my_work_projects) {
 
         } else if (id == R.id.profile) {
+            Intent intent = new Intent(AllProjectsActivity.this, ProfileActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.logout) {
+            SharedPreferences settings = getSharedPreferences("user", MODE_PRIVATE);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.remove("user_id");
+            editor.commit();
 
+            Intent intent = new Intent(AllProjectsActivity.this,LoginActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

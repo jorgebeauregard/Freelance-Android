@@ -118,7 +118,7 @@ public class CreateProjectActivity extends AppCompatActivity implements AdapterV
         // Start the queue
         mRequestQueue.start();
 
-        final String url = "http://192.168.0.35:8000/";
+        final String url = "http://10.50.92.115:8000/";
         String urlG = url + "api/getAllCategories";
         final Context c = this;
         // Formulate the request and handle the response.

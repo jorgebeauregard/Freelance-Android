@@ -56,6 +56,8 @@ public class AllMyProjectsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 
+        setTitle("My Submitted Projects");
+
         preferences = getSharedPreferences("user", MODE_PRIVATE);
         if (preferences.getString("user_id", "").equals("")) {
             Intent intent = new Intent(AllMyProjectsActivity.this, LoginActivity.class);
