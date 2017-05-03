@@ -42,7 +42,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CurrentProjects extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class CurrentProjects extends AppCompatActivity {
     private ListView listProjects;
     private List<Project> ListProjects;
     private AdapterHome a1;
@@ -51,7 +51,7 @@ public class CurrentProjects extends AppCompatActivity implements NavigationView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_current_projects);
 
         setTitle("Current Projects");
 
@@ -61,28 +61,8 @@ public class CurrentProjects extends AppCompatActivity implements NavigationView
             startActivity(intent);
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         ListProjects = new ArrayList<>();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(CurrentProjects.this,CreateProjectActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
         //Request Data from the server
 
@@ -155,66 +135,6 @@ public class CurrentProjects extends AppCompatActivity implements NavigationView
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
             super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the AllProjectsActivity/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.all_projects) {
-            Intent intent = new Intent(CurrentProjects.this, AllProjectsActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.my_submitted_projects) {
-            Intent intent = new Intent(CurrentProjects.this, AllMyProjectsActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.my_work_projects) {
-
-        } else if (id == R.id.profile) {
-            Intent intent = new Intent(CurrentProjects.this, ProfileActivity.class);
-            startActivity(intent);
-
-        } else if (id == R.id.logout) {
-            SharedPreferences settings = getSharedPreferences("user", MODE_PRIVATE);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.remove("user_id");
-            editor.commit();
-
-            Intent intent = new Intent(CurrentProjects.this,LoginActivity.class);
-            startActivity(intent);
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 }
