@@ -92,7 +92,6 @@ public class CreateProjectActivity extends AppCompatActivity implements AdapterV
                     public void onResponse(String response) {
                         Toast.makeText(CreateProjectActivity.this, "Project has been successfully saved",
                                 Toast.LENGTH_LONG).show();
-
                         Intent intent = new Intent(CreateProjectActivity.this, AllProjectsActivity.class);
                         startActivity(intent);
                     }
