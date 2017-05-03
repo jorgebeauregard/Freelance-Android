@@ -12,15 +12,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.jorgebeauregard.freelance.Activity.ProjectActivity;
+import com.example.jorgebeauregard.freelance.Activity.MyProjectActivity;
 import com.example.jorgebeauregard.freelance.Classes.Project;
 import com.example.jorgebeauregard.freelance.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.squareup.picasso.Picasso.with;
 
 /**
  * Created by Jorge Beauregard on 4/26/2017.
@@ -59,7 +57,7 @@ public class AdapterHome extends BaseAdapter {
         project.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(parentActivity, ProjectActivity.class);
+                Intent intent= new Intent(parentActivity, MyProjectActivity.class);
                 intent.putExtra("project_id",listProjects.get(position).getId());
                 parentActivity.startActivity(intent);
             }

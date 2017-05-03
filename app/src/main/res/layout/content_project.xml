@@ -7,7 +7,7 @@
     android:background="@color/background"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.jorgebeauregard.freelance.Activity.ProjectActivity"
+    tools:context="com.example.jorgebeauregard.freelance.Activity.MyProjectActivity"
     tools:showIn="@layout/activity_project">
 
     <com.daimajia.slider.library.SliderLayout

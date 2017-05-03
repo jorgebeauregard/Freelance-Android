@@ -25,7 +25,6 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Write the name of the project here"
             android:layout_marginBottom="10dp"
             android:id="@+id/project_name"/>
         <TextView
@@ -36,7 +35,6 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Write the description of the project here"
             android:layout_marginBottom="10dp"
             android:id="@+id/project_description"/>
         <TextView

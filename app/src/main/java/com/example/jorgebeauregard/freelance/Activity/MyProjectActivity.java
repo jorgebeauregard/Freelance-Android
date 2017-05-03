@@ -1,13 +1,9 @@
 package com.example.jorgebeauregard.freelance.Activity;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -39,10 +35,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class ProjectActivity extends AppCompatActivity {
+public class MyProjectActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +54,7 @@ public class ProjectActivity extends AppCompatActivity {
             actionBar.setDisplayShowHomeEnabled(true);
         }
 
-        //Change color of the status because Android Studio is stupid and the types of the activities don't match
+        //Change color of the status bar because Android Studio is stupid and the types of the activities don't match
         Window window = this.getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -69,7 +64,8 @@ public class ProjectActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ProjectActivity.this,EditProjectActivity.class);
+                Intent intent = new Intent(MyProjectActivity.this,EditProjectActivity.class);
+                intent.putExtra("project_id",getIntent().getIntExtra("project_id",1));
                 startActivity(intent);
             }
         });
@@ -112,7 +108,7 @@ public class ProjectActivity extends AppCompatActivity {
                     }
 
                     for (int i = 0; i < images_list.size(); i++) {
-                        TextSliderView textSliderView = new TextSliderView(ProjectActivity.this);
+                        TextSliderView textSliderView = new TextSliderView(MyProjectActivity.this);
                         // initialize a SliderLayout
                         textSliderView.image(images_list.get(i));
 
