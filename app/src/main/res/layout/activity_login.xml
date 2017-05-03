@@ -22,7 +22,7 @@
         android:visibility="gone" />
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="170dp"
         android:src="@drawable/logo"/>
     
     <LinearLayout
@@ -112,7 +112,7 @@
             android:text="REGISTER"
             android:background="#39c3da"
             android:layout_gravity="center"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:textColor="@android:color/white"/>
 

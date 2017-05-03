@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.jorgebeauregard.freelance.Activity.AllProjectsActivity"
-    tools:showIn="@layout/app_bar_home">
+    tools:context="com.example.jorgebeauregard.freelance.Activity.AllMyProjectsActivity"
+    tools:showIn="@layout/activity_all_my_projects"
+    android:background="@color/background">
 
     <ListView
         android:id="@+id/listProjects"
@@ -18,4 +18,5 @@
         android:dividerHeight="9dp"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp" />
+
 </RelativeLayout>

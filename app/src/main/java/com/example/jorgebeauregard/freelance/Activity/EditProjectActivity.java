@@ -92,7 +92,7 @@ public class EditProjectActivity extends AppCompatActivity implements AdapterVie
                     public void onResponse(String response) {
                         Toast.makeText(EditProjectActivity.this, "Project has been succesfully edited",
                                 Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(EditProjectActivity.this, MyProjectActivity.class);
+                        Intent intent = new Intent(EditProjectActivity.this, AllMyProjectsActivity.class);
                         intent.putExtra("project_id",getIntent().getIntExtra("project_id",1));
                         startActivity(intent);
 

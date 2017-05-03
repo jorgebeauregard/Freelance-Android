@@ -13,12 +13,12 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="Freelancers"
+        android:label="freelance"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activity.Home"
+            android:name=".Activity.AllProjectsActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -40,8 +40,12 @@
             android:label="@string/title_activity_create_project"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="Activity.LoginActivity"
+            android:name=".Activity.LoginActivity"
             android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.AllMyProjectsActivity"
+            android:label="@string/title_activity_all_my_projects"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -28,13 +27,11 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
-import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.example.jorgebeauregard.freelance.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -183,7 +180,7 @@ public class CreateProjectActivity extends AppCompatActivity implements AdapterV
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
+        // automatically handle clicks on the AllProjectsActivity/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
@@ -192,7 +189,7 @@ public class CreateProjectActivity extends AppCompatActivity implements AdapterV
             return true;
         }
 
-        Intent myIntent = new Intent(getApplicationContext(), Home.class);
+        Intent myIntent = new Intent(getApplicationContext(), AllProjectsActivity.class);
         startActivityForResult(myIntent, 0);
 
         return super.onOptionsItemSelected(item);
