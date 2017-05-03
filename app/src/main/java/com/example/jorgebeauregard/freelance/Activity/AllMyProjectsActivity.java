@@ -21,6 +21,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Cache;
 import com.android.volley.Request;
@@ -49,6 +50,7 @@ public class AllMyProjectsActivity extends AppCompatActivity {
     private SharedPreferences preferences;
     private String name;
 
+    final String url = "http://10.50.92.115:8000/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +103,7 @@ public class AllMyProjectsActivity extends AppCompatActivity {
         // Start the queue
         mRequestQueue.start();
 
-        final String url = "http://10.50.92.115:8000/";
+
         String urlG = url + "api/getMyProjects?user_id=" + getSharedPreferences("user", MODE_PRIVATE).getString("user_id", "");
         final Context c = this;
         // Formulate the request and handle the response.
