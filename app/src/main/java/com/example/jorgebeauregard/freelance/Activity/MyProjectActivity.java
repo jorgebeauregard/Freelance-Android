@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,10 @@ public class MyProjectActivity extends AppCompatActivity {
     final String url = "http://10.50.92.115:8000/";
     private SharedPreferences preferences;
     FloatingActionButton fab;
+    int projectId;
+    private String Owner;
+    private Button destroy;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +86,7 @@ public class MyProjectActivity extends AppCompatActivity {
                 else
                 {
                     joinProject();
-                    Intent intent = new Intent(MyProjectActivity.this,CurrentProjects.class);
+                    Intent intent = new Intent(MyProjectActivity.this,AllMyProjectsActivity.class);
                     startActivity(intent);
                 }
             }
@@ -192,6 +197,18 @@ public class MyProjectActivity extends AppCompatActivity {
 
                     //End Set Text for Collaborators
 
+                    destroy = (Button) findViewById(R.id.button2);
+
+
+                    if (!Owner.equals(getIntent().getStringExtra("name")))
+                        destroy.setVisibility(View.GONE);
+                    destroy.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            selfDestruct();
+                        }
+                    });
+
                 } catch (JSONException e) {
                     Log.e("JSONException", "Error: " + e.toString());
                 }
@@ -297,4 +314,54 @@ public class MyProjectActivity extends AppCompatActivity {
         return true;
     }
 
+    public void selfDestruct() {
+        RequestQueue mRequestQueue;
+        // Instantiate the cache
+        Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        BasicNetwork network = new BasicNetwork(new HurlStack());
+        // Instantiate the RequestQueue with the cache and network.
+        mRequestQueue = new RequestQueue(cache, network);
+        // Start the queue
+        mRequestQueue.start();
+        String login = url + "api/deleteProject?project_id=" + String.valueOf(projectId);
+        final Context c = this;
+        // Formulate the request and handle the response.
+        //Toast.makeText(getBaseContext(),"prueba", Toast.LENGTH_SHORT).show();
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, login, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                // Do something with the response
+                //Toast.makeText(getBaseContext(),"pruebaConexion", Toast.LENGTH_SHORT).show();
+                try {
+                    JSONObject jsonData = new JSONObject(response);
+                    JSONObject JSONdata;
+                    //para mostrar errores
+                    String state = jsonData.getString("state");
+                    //Toast.makeText(getBaseContext(),state, Toast.LENGTH_SHORT).show();
+                    if (Integer.parseInt(state) == 401) {
+                        Toast.makeText(getBaseContext(), "Cannot delete", Toast.LENGTH_SHORT).show();
+                    }
+                    if (Integer.parseInt(state) == 404) {
+                        Toast.makeText(getBaseContext(), "Cannot delete", Toast.LENGTH_SHORT).show();
+                    }
+                    if (Integer.parseInt(state) == 200) {
+                        Intent intent = new Intent(MyProjectActivity.this, AllMyProjectsActivity.class);
+                        startActivity(intent);
+                        Toast.makeText(getBaseContext(), "Proyecto Borrado", Toast.LENGTH_SHORT).show();
+                    }
+                    //fin de muestra errores
+
+                } catch (JSONException e) {
+                    Log.e("JSONException", "Error: " + e.toString());
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getBaseContext(), error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        mRequestQueue.add(stringRequest);
+    }
 }
