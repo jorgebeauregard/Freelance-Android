@@ -85,8 +85,6 @@ public class CreateProjectActivity extends AppCompatActivity implements AdapterV
                 String category_to_send = option_category.replace(" ", "%20");
                 final String url = "http://10.50.92.115:8000/";
                 String urlG = url + "api/createProject?name="+name_to_send+"&description="+description_to_send+"&user_id="+getSharedPreferences("user",MODE_PRIVATE).getString("user_id","")+"&difficulty="+option_difficulty+"&category="+category_to_send;
-                Toast.makeText(CreateProjectActivity.this, urlG,
-                        Toast.LENGTH_LONG).show();
 
                 // Formulate the request and handle the response.
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, urlG, new Response.Listener<String>() {
@@ -94,13 +92,13 @@ public class CreateProjectActivity extends AppCompatActivity implements AdapterV
                     public void onResponse(String response) {
                         Toast.makeText(CreateProjectActivity.this, "Project has been successfully saved",
                                 Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(CreateProjectActivity.this, AllProjectsActivity.class);
+                        startActivity(intent);
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // Handle error
-                        Toast.makeText(CreateProjectActivity.this, error.toString(),
-                                Toast.LENGTH_LONG).show();
                     }
                 });
                 // Add the request to the RequestQueue.
@@ -200,13 +198,9 @@ public class CreateProjectActivity extends AppCompatActivity implements AdapterV
         switch(parent.getId()){
             case R.id.category_spinner:
                 option_category =  parent.getItemAtPosition(position).toString();
-                Toast.makeText(CreateProjectActivity.this, parent.getItemAtPosition(position).toString(),
-                        Toast.LENGTH_LONG).show();
             break;
             case R.id.difficulty_spinner:
                 option_difficulty = parent.getItemAtPosition(position).toString();
-                Toast.makeText(CreateProjectActivity.this, parent.getItemAtPosition(position).toString(),
-                        Toast.LENGTH_LONG).show();
             break;
         }
 
